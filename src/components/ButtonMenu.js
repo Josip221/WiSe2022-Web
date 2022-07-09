@@ -1,12 +1,16 @@
 import React from 'react';
-import Button from './Button';
+import Modal from './Modal';
 
-function ButtonMenu({ measureHandler, resetHandler }) {
+function ButtonMenu({ resetHandler }) {
   return (
-    <div className="mb-7">
-      <Button title={'Measure'} onClick={measureHandler} />
-      <Button title={'Reset'} onClick={resetHandler} />
-    </div>
+    <>
+      <div className="mb-2">
+        <label className="btn" htmlFor="main-modal">
+          RESET MEASUREMENTS
+        </label>
+        <Modal resetHandler={resetHandler} />
+      </div>
+    </>
   );
 }
 

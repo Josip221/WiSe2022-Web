@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { useState, useEffect } from 'react';
 import { getDatabase, onValue, ref, set } from 'firebase/database';
-import ButtonMenu from './components/ButtonMenu';
-import Table from './components/Table';
+import Info from './components/Info';
+
+import Readings from './components/Readings';
 
 function App() {
   const firebaseConfig = {
@@ -18,14 +19,10 @@ function App() {
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  const measureHandler = () => {
-    set(ref(db, 'measureStatus'), 1);
-  };
-
   const resetHandler = () => {
     set(ref(db, 'measure'), null);
   };
-  const [measureData, setMeasureData] = useState([]);
+  const [measureData, setMeasureData] = useState(null);
 
   useEffect(() => {
     const measureDataRef = ref(db, 'measure');
@@ -33,23 +30,10 @@ function App() {
       setMeasureData(snapshot.val());
     });
   }, [db]);
-
   return (
-    <div className="flex flex-col items-center">
-      <div className="">
-        <h1 className="text-center text-6xl bold rounded-lg p-10">
-          Wemos D1 App Demo
-        </h1>
-        <div>
-          <p className="text-center">Wemos D1 board</p>
-          <p className="text-center">ESP8266 WiFi communication</p>
-          <p className="text-center">BME680 sensor</p>
-        </div>
-        <div className="divider"></div>
-        <p className="text-center my-5">Control sensor for air quality data</p>
-      </div>
-      <ButtonMenu measureHandler={measureHandler} resetHandler={resetHandler} />
-      {<Table measureData={measureData} />}
+    <div className="flex flex-col items-center font-quicksand">
+      <Info />
+      <Readings measureData={measureData} resetHandler={resetHandler} />
     </div>
   );
 }
